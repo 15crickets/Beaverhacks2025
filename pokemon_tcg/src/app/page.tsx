@@ -1,16 +1,25 @@
-import Image from "next/image";
+'use client'
+import ImageButton from "@/components/image_button";
+import { redirect } from "next/dist/server/api-utils";
+import { useRouter } from 'next/navigation'
 
 export default function Home() {
+  const router = useRouter()
+
+  const handleImageClick = () => {
+    router.push('/set1')
+  }
+  
   return (
     <div className="grid cols-5 gap-4">
       <div className="col-span-1">
-        <Image
+      <ImageButton
           src="/images/surging_sparks.jpg"
-          alt="Image 1"
+          alt="Surging Sparks"
           width={200}
           height={200}
-          className="rounded-lg shadow-md"
-          />
+          onClick={handleImageClick}
+        />
       </div>
       
     </div>
