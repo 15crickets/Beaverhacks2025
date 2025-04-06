@@ -1,7 +1,8 @@
 'use client'
+
 import ImageButton from "@/components/image_button";
-import { redirect } from "next/dist/server/api-utils";
 import { useRouter } from 'next/navigation'
+import EmphasizeImage from "@/components/emphasize_image";
 
 export default function Home() {
   const router = useRouter()
@@ -11,18 +12,27 @@ export default function Home() {
   }
   
   return (
-    <div className="grid cols-5 gap-4">
-      <div className="col-span-1">
-      <ImageButton
-          src="/images/surging_sparks.jpg"
-          alt="Surging Sparks"
-          width={200}
-          height={200}
-          onClick={handleImageClick}
-        />
+    <div>
+      <div className="grid grid-cols-5 gap-4 mx-10 my-10">
+        <div className="col-span-1 gap-4">
+          <EmphasizeImage
+            src="/images/surging_sparks.jpg"
+            alt="Surging Sparks"
+            width={200}
+            height={200}
+            link="/set1"
+          />
+        </div>
+        <div className="col-span-1 gap-4">
+          <EmphasizeImage
+            src="/images/journey_together.jpg"
+            alt="Journey Together"
+            width={200}
+            height={200}
+            link="/set2"
+          />
+        </div>
       </div>
-      
     </div>
-
   );
 }
