@@ -22,9 +22,6 @@ export async function runCode() {
    await client.db("admin").command({ ping: 1 });
    console.log("Pinged your deployment. You successfully connected to MongoDB!");
 
-
-
-
    newVar = await getValues("image", "name", "normal", "rarity");
  } finally {
    await client.close();

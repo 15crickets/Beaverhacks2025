@@ -3,6 +3,7 @@
 import ImageButton from "@/components/image_button";
 import { useRouter } from 'next/navigation'
 import EmphasizeImage from "@/components/emphasize_image";
+import {calculateAverageValues} from "@/components/calculate";
 
 export default function Home() {
   return (

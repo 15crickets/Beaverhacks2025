@@ -1,7 +1,8 @@
 
  import Image from "next/image";
  import ImagePanels from "@/components/image_gallery";
- import {runCode} from "@/components/accessing_stuff"
+ import {runCode} from "@/components/accessing_stuff";
+
  
  
  
