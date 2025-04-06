@@ -17,6 +17,7 @@
     "@heroui/theme": "^2.4.12",
     "@mui/icons-material": "^7.0.1",
     "@mui/material": "^7.0.1",
+    "@prisma/client": "^6.5.0",
     "framer-motion": "^12.6.3",
     "next": "15.2.4",
     "react": "^19.1.0",
@@ -27,6 +28,7 @@
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "prisma": "^6.5.0",
     "tailwindcss": "^4",
     "typescript": "^5"
   }
