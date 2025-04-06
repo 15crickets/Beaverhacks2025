@@ -25,7 +25,7 @@ export async function GET(req) {
   const results = await collection.find({}, { projection }).toArray();
 
   if (sortBy === 'price') {
-    results.sort((a, b) => parseFloat(a.normal) - parseFloat(b.normal));
+    results.sort((a, b) => parseFloat(b.normal) - parseFloat(a.normal));
   } else {
     results.sort((a, b) => a[sortBy]?.localeCompare(b[sortBy]));
   }

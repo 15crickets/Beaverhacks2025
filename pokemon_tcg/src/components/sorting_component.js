@@ -28,7 +28,7 @@ export default function SortingComponent({ url = '/api/data/surging_sparks' }) {
           >
             <option value="name">Name (A–Z)</option>
             <option value="rarity">Rarity</option>
-            <option value="price">Price (Low–High)</option>
+            <option value="price">Price (High-Low)</option>
           </select>
         </div>
       </div>
