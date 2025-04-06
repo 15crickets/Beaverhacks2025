@@ -5,12 +5,6 @@ import { useRouter } from 'next/navigation'
 import EmphasizeImage from "@/components/emphasize_image";
 
 export default function Home() {
-  const router = useRouter()
-
-  const handleImageClick = () => {
-    router.push('/set1')
-  }
-  
   return (
     <div>
       <div className="grid grid-cols-5 gap-4 mx-10 my-10">
@@ -20,7 +14,7 @@ export default function Home() {
             alt="Surging Sparks"
             width={200}
             height={200}
-            link="/set1"
+            link="/surging_sparks"
           />
         </div>
         <div className="col-span-1 gap-4">
