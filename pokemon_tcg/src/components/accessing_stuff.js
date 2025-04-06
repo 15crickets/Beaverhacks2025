@@ -20,15 +20,41 @@ export default function AccessingStuff({ url = '/api/surging_sparks', sortBy = '
   return (
     <div className="grid grid-cols-4 gap-20">
       {results.map((doc, index) => (
+
+        
         <div key={index} className="flex flex-col w-fit">
           <img src={doc.image} alt={`Image ${index}`} className="mb-2" />
           <div className="bg-[#070826] mt-3 rounded-xl mb-15 w-full">
             <p className="text-center font-bold">{doc.name}</p>
             <p className="text-center font-bold">{doc.rarity}</p>
-            <p className="text-center font-bold">${doc.normal}</p>
+            {displayPrices(doc)}
           </div>
         </div>
       ))}
     </div>
   );
+}
+
+function displayPrices(doc){
+  const returned = [];
+  if(doc.normal != 0){
+    returned.push(<p className="text-center font-bold">Normal Price: ${doc.normal}</p>);
+
+  }
+
+  if(doc.holofoil != 0){
+    returned.push(<p className="text-center font-bold">Holofoil Price: ${doc.holofoil}</p>
+    )
+  }
+
+  if(doc.reverse_holofoil != 0){
+    returned.push(<p className="text-center font-bold">Reverse Holofoil Price: ${doc.reverse_holofoil}</p>
+    )
+  }
+
+
+  return(
+    <>{returned}</>
+  )
+
 }

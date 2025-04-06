@@ -11,14 +11,19 @@ export async function GET(req) {
   const collectionName = pathParts[pathParts.length - 1]; // e.g. "surging_sparks"
 
   const client = await clientPromise;
-  const db = client.db('SurgingSparks');
+  const db = client.db('test_database');
   const collection = db.collection(collectionName);
 
   const projection = {
     image: 1,
     name: 1,
     normal: 1,
+    holofoil: 1,
+    reverse_holofoil: 1,
+    first_edition_holofoil: 1,
+    first_edition_normal: 1,
     rarity: 1,
+
     _id: 0,
   };
 
