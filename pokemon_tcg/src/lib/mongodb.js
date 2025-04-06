@@ -13,11 +13,18 @@ const options = {
 let client;
 let clientPromise;
 
-if (!global._mongoClientPromise) {
+// Only initialize the MongoClient once
+if (process.env.NODE_ENV === 'development') {
+  // In development mode, use global to ensure the MongoClient is reused across hot reloads
+  if (!global._mongoClientPromise) {
+    client = new MongoClient(uri, options);
+    global._mongoClientPromise = client.connect();
+  }
+  clientPromise = global._mongoClientPromise;
+} else {
+  // In production mode, it’s safe to create a new MongoClient instance each time
   client = new MongoClient(uri, options);
-  global._mongoClientPromise = client.connect();
+  clientPromise = client.connect();
 }
-
-clientPromise = global._mongoClientPromise;
 
 export default clientPromise;
