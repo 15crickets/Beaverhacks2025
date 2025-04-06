@@ -6,7 +6,8 @@ import {runCode} from "@/components/accessing_stuff"
 
 
 export default async function Home() {
- const listImages = await runCode();
+ const result = await runCode();
+ const listImages: string[] = result?.flat().filter((item): item is string => typeof item === "string") || [];
  if(listImages && listImages.length > 0){
    console.log("HIIIII: " + listImages[0]);
  }
