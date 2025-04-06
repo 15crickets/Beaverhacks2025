@@ -27,7 +27,7 @@ export default function Home() {
             alt="Journey Together"
             width={197}
             height={366}
-            link="/set2"
+            link="/journey_together"
           />
            <div className = "bg-[#070826] mt-3 rounded-xl">
             <p className = "text-center">Journey Together</p>

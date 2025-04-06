@@ -25,7 +25,7 @@ export async function runCode() {
 
 
 
-   newVar = await getValues("image", "name", "normal", "rarity");
+   newVar = await getValues("image");
  } finally {
    await client.close();
  }
@@ -35,25 +35,19 @@ export async function runCode() {
 
 
 
-async function getValues(image, name, price, rarity) {
+async function getValues(fieldName) {
  try {
    const database = client.db("test_database");
-   const collection = database.collection("surging_sparks");
+   const collection = database.collection("journey_together");
 
 
 
 
-   const projection = { [image]: 1, [name]: 1, [price]: 1, [rarity]: 1, _id: 0 }; // Include the specific field and exclude the _id field
+   const projection = { [fieldName]: 1, _id: 0 }; // Include the specific field and exclude the _id field
    const results = await collection.find({}, { projection }).toArray();
 
 
-   const imageList = results.map((doc) => doc[image]);
-   const nameList = results.map((doc) => doc[name]);
-   const priceList = results.map((doc) => doc[price]);
-   const rarityList = results.map((doc) => doc[rarity]);
-
-
-   return [imageList, nameList, priceList, rarityList];
+   return results.map((doc) => doc[fieldName]);
 
 
  } catch (err) {
