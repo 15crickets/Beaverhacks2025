@@ -10,13 +10,8 @@ export default async function Home() {
  if(listImages && listImages.length > 0){
    console.log("HIIIII: " + listImages[0]);
  }
-
-
-
-
-
-
-
+}
+/*
 
    return (
 <div className = "">
@@ -24,7 +19,7 @@ export default async function Home() {
        {listImages?.map((item:string, index:number) => (
         <div className="w-3/7">
           <img className="w-full" key={index} src={item}>
-            {/* You can add content or styles here */}
+            {}
           </img>
           <div className = "bg-[#070826] mt-3 rounded-xl mb-15">
           <p className = "text-center">Journey Together</p>
@@ -36,3 +31,5 @@ export default async function Home() {
 </div>
    );
  }
+
+*/
