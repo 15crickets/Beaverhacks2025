@@ -1,22 +1,32 @@
 import Image from "next/image";
+import ImagePanels from "@/components/image_gallery";
+import {runCode} from "@/components/accessing_stuff"
 
-export default function Home() {
-    return (
-<div>
-  <div className="grid grid-cols-8 gap-4 mx-10 my-10">
-    <div className="col-span-1 gap-4">
-      <img src ="/images/budew_test.jpg">
-      
-      </img>
-        
 
-    </div>
-    <div className="col-span-1 gap-4">
-    
 
-    </div>
-  </div>
+
+export default async function Home() {
+ const listImages = await runCode();
+ if(listImages && listImages.length > 0){
+   console.log("HIIIII: " + listImages[0]);
+ }
+
+
+
+
+
+
+
+
+   return (
+<div className = "w-screen">
+   <div className="grid grid-cols-3">
+       {listImages?.map((item:string, index:number) => (
+         <img key={index} src={item}>
+           {/* You can add content or styles here */}
+         </img>
+       ))}
+     </div>
 </div>
-    );
-  }
-  
+   );
+ }
