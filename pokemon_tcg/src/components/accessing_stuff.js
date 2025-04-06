@@ -1,66 +1,33 @@
-const { MongoClient, ServerApiVersion } = require('mongodb');
-const uri = "mongodb+srv://laol2006:drinkM0reWater%25@surgingsparks.cqtwveb.mongodb.net/test_database?retryWrites=true&w=majority&appName=SurgingSparks";
+'use client';
 
+import { useState, useEffect } from 'react';
 
+export default function AccessingStuff({ url = '/api/data/surging_sparks', sortBy = 'name' }) {
+  const [results, setResults] = useState([]);
 
+  useEffect(() => {
+    const fetchData = async () => {
+      const fullUrl = `${url}?sortBy=${sortBy}`;
+      const res = await fetch(fullUrl);
+      const data = await res.json();
+      setResults(data);
+    };
 
-const client = new MongoClient(uri, {
- serverApi: {
-   version: ServerApiVersion.v1,
-   strict: true,
-   deprecationErrors: true,
- }
-});
+    fetchData();
+  }, [url, sortBy]); // Re-run effect if URL or sort order changes
 
-
-
-
-export async function runCode() {
- let newVar;
- try {
-   await client.connect();
-   await client.db("admin").command({ ping: 1 });
-   console.log("Pinged your deployment. You successfully connected to MongoDB!");
-
-   newVar = await getValues("image", "name", "normal", "rarity");
- } finally {
-   await client.close();
- }
- return newVar;
+  return (
+    <div className="grid grid-cols-4 gap-20">
+      {results.map((doc, index) => (
+        <div key={index} className="flex flex-col w-fit">
+          <img src={doc.image} alt={`Image ${index}`} className="mb-2" />
+          <div className="bg-[#070826] mt-3 rounded-xl mb-15 w-full">
+            <p className="text-center font-bold">{doc.name}</p>
+            <p className="text-center font-bold">{doc.rarity}</p>
+            <p className="text-center font-bold">${doc.normal}</p>
+          </div>
+        </div>
+      ))}
+    </div>
+  );
 }
-
-
-
-
-async function getValues(image, name, price, rarity) {
- try {
-   const database = client.db("test_database");
-   const collection = database.collection("surging_sparks");
-
-
-
-
-   const projection = { [image]: 1, [name]: 1, [price]: 1, [rarity]: 1, _id: 0 }; // Include the specific field and exclude the _id field
-   const results = await collection.find({}, { projection }).toArray();
-
-
-   const imageList = results.map((doc) => doc[image]);
-   const nameList = results.map((doc) => doc[name]);
-   const priceList = results.map((doc) => doc[price]);
-   const rarityList = results.map((doc) => doc[rarity]);
-
-
-   return [imageList, nameList, priceList, rarityList];
-
-
- } catch (err) {
-   console.error(err);
-  
- }
-  
-  
- 
-}
-
-
-runCode().catch(console.dir);
