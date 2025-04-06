@@ -117,7 +117,7 @@ export default function Home() {
           <div className = "bg-[#070826] mt-3 rounded-xl">
             <p className = "text-center">Paldean Fates</p>
             <p className = "text-center">MP: $8.50</p>
-            <p className = "text-center">EV: $2.27</p>
+            <p className = "text-center">EV: $4.39</p>
           </div>
         </div>
         <div className="col-span-1 gap-4 w-fit">
