@@ -14,3 +14,4 @@ item2 = {
 }
 
 collection_name.insert_many([item1, item2])
+print("getting here?")
