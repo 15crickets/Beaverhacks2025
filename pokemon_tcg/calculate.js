@@ -12,13 +12,10 @@ const client = new MongoClient(uri, {
 
 async function calculatePackValue(dbName, collectionName) {
   try {
-    await client.connect();
-    console.log("Connected to MongoDB!");
-
     const database = client.db(dbName);
     const collection = database.collection(collectionName);
 
-    // Rarities grouped by types
+    // Special Odds for the Different Rarities
     const premiumRarities = {
       "ACE SPEC Rare": 0.0503,
       "Illustration Rare": 0.0767,
@@ -28,13 +25,14 @@ async function calculatePackValue(dbName, collectionName) {
       "Double Rare": 0.1694
     };
 
+    // Base rarities that scale with the amount of each within a set
     const baseRarities = ["Common", "Uncommon", "Rare"];
 
-    // Count how many cards of each rarity are in the set
+    // Get counts for each of the rarities
     const rarityCounts = {};
     const averageValues = {};
 
-    // First get base rarities
+    // base rarity calculations
     for (const rarity of baseRarities) {
       const cards = await collection.find({ rarity }).toArray();
       if (cards.length > 0) {
@@ -51,7 +49,7 @@ async function calculatePackValue(dbName, collectionName) {
       }
     }
 
-    // Then get premium rarities
+    // premium rarities
     for (const rarity in premiumRarities) {
       const cards = await collection.find({ rarity }).toArray();
       if (cards.length > 0) {
@@ -64,7 +62,7 @@ async function calculatePackValue(dbName, collectionName) {
       }
     }
 
-    // Total for base rarity scaling
+    // Tally up base rarities for holo scaling
     const totalBase = baseRarities.reduce((sum, rarity) => sum + (rarityCounts[rarity] || 0), 0);
 
     // Slot 1-4: Common (normal)
@@ -73,7 +71,7 @@ async function calculatePackValue(dbName, collectionName) {
     // Slot 5-7: Uncommon (normal)
     expectedValue += 3 * (averageValues["Uncommon_normal"] || 0);
 
-    // Slot 8 logic (ACE SPEC chance or scaled base rarities)
+    // Slot 8: (ACE SPEC odds if they are within set or scaled base rarities)
     if (rarityCounts["ACE SPEC Rare"] > 0) {
       expectedValue += 0.0503 * (averageValues["ACE SPEC Rare"] || 0);
     } else {
@@ -83,7 +81,7 @@ async function calculatePackValue(dbName, collectionName) {
       }
     }
 
-    // Slot 9 logic (premium or base rarity scaled)
+    // Slot 9: Premium slot or scaled base rarities
     const slot9RarityChances = {
       "Illustration Rare": 0.0767,
       "Special Illustration Rare": 0.0115,
@@ -101,7 +99,7 @@ async function calculatePackValue(dbName, collectionName) {
       expectedValue += remainingChance9 * proportion * (averageValues[`${rarity}_reverse`] || 0);
     }
 
-    // Slot 10 logic
+    // Slot 10: Premium slot or Holo Rare
     expectedValue += 0.0674 * (averageValues["Ultra Rare"] || 0);
     expectedValue += 0.1694 * (averageValues["Double Rare"] || 0);
 
@@ -109,12 +107,35 @@ async function calculatePackValue(dbName, collectionName) {
     expectedValue += remainingChance10 * (averageValues["Rare_reverse"] || 0);
 
     console.log(`Estimated average pack value for ${collectionName}: $${expectedValue.toFixed(2)}`);
-
   } catch (error) {
     console.error("Error:", error);
-  } finally {
-    await client.close();
   }
 }
 
-calculatePackValue("test_database", "surging_sparks");
+// Main runner
+async function run() {
+  try {
+    await client.connect();
+    console.log("Mongo Connected");
+
+    // Call as many times as needed
+    await calculatePackValue("test_database", "151");
+    await calculatePackValue("test_database", "journey_together");
+    await calculatePackValue("test_database", "paldean_fates");
+    await calculatePackValue("test_database", "paradox_rift");
+    await calculatePackValue("test_database", "prismatic_evolutions");
+    await calculatePackValue("test_database", "shrouded_fable");
+    await calculatePackValue("test_database", "stellar_crown");
+    await calculatePackValue("test_database", "surging_sparks");
+    await calculatePackValue("test_database", "temporal_forces");
+    await calculatePackValue("test_database", "twilight_masquerade");
+
+  } catch (err) {
+    console.error("Mongo connection error:", err);
+  } finally {
+    await client.close();
+    console.log("Mongo Disconnected");
+  }
+}
+
+run();
