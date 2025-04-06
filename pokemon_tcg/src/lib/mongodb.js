@@ -1,6 +1,6 @@
 import { MongoClient, ServerApiVersion } from 'mongodb';
 
-const uri = "mongodb+srv://laol2006:drinkM0reWater%25@surgingsparks.cqtwveb.mongodb.net/test_database?retryWrites=true&w=majority&appName=SurgingSparks";
+const uri = "mongodb+srv://leed22:beaverhacks@surgingsparks.cqtwveb.mongodb.net/?retryWrites=true&w=majority&appName=SurgingSparks";
 
 const options = {
   serverApi: {

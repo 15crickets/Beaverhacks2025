@@ -3,7 +3,7 @@ import { useState } from 'react';
 import AccessingStuff from './accessing_stuff';
 import Link from 'next/link';
 
-export default function SortingComponent({ url = '/api/surging_sparks' }) {
+export default function SortingComponent({ url = '/api/data/surging_sparks' }) {
   const [sortBy, setSortBy] = useState('name');
 
   const handleSortChange = (e) => {

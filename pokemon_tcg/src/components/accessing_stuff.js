@@ -10,6 +10,7 @@ export default function AccessingStuff({ url = '/api/surging_sparks', sortBy = '
       const fullUrl = `${url}?sortBy=${sortBy}`;
       const res = await fetch(fullUrl);
       const data = await res.json();
+      console.log('Fetched data:', data);
       setResults(data);
     };
 
