@@ -2,7 +2,7 @@
 import SortingComponent from '@/components/sorting_component';
 export default function Home() {
   return (
-    <div className="w-screen">
+    <div className="">
       <div >
         <SortingComponent/>
       </div>
