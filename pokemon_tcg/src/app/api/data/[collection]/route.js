@@ -11,7 +11,7 @@ export async function GET(req) {
   const collectionName = pathParts[pathParts.length - 1]; // e.g. "surging_sparks"
 
   const client = await clientPromise;
-  const db = client.db('SurgingSparks');
+  const db = client.db('test_database');
   const collection = db.collection(collectionName);
 
   const projection = {

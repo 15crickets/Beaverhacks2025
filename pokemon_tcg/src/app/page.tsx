@@ -7,7 +7,7 @@ import EmphasizeImage from "@/components/emphasize_image";
 export default function Home() {
   return (
     <div>
-      <div className="flex grid grid-cols-5 gap-7 mx-10 my-10">
+      <div className="flex justify-items-center grid grid-cols-5 gap-7 mx-10 my-10">
         <div className="col-span-1 gap-4 w-fit">
           <EmphasizeImage
             src="/images/surging_sparks.jpg"
@@ -40,7 +40,7 @@ export default function Home() {
             alt="Prismatic Evolutions"
             width={197}
             height={366}
-            link="/surging_sparks"
+            link="/prismatic_evolutions"
           />
           <div className = "bg-[#070826] mt-3 rounded-xl">
             <p className = "text-center">Prismatic Evolutions</p>
@@ -53,7 +53,7 @@ export default function Home() {
             alt="Stellar Crown"
             width={197}
             height={366}
-            link="/surging_sparks"
+            link="/stellar_crown"
           />
           <div className = "bg-[#070826] mt-3 rounded-xl">
             <p className = "text-center">Stellar Crown</p>
@@ -66,7 +66,7 @@ export default function Home() {
             alt="Shrouded Fable"
             width={197}
             height={366}
-            link="/surging_sparks"
+            link="/shrouded_fable"
           />
           <div className = "bg-[#070826] mt-3 rounded-xl">
             <p className = "text-center">Shrouded Fable</p>
@@ -79,7 +79,7 @@ export default function Home() {
             alt="Twilight Masquerade"
             width={197}
             height={366}
-            link="/surging_sparks"
+            link="/twilight_masquerade"
           />
           <div className = "bg-[#070826] mt-3 rounded-xl">
             <p className = "text-center">Twilight Masquerade</p>
@@ -92,7 +92,7 @@ export default function Home() {
             alt="Temporal Forces"
             width={197}
             height={366}
-            link="/journey_together"
+            link="/temporal_forces"
           />
            <div className = "bg-[#070826] mt-3 rounded-xl">
             <p className = "text-center">Temporal Forces</p>
@@ -105,7 +105,7 @@ export default function Home() {
             alt="Paldean Fates"
             width={197}
             height={366}
-            link="/surging_sparks"
+            link="/paldean_fates"
           />
           <div className = "bg-[#070826] mt-3 rounded-xl">
             <p className = "text-center">Paldean Fates</p>
@@ -118,7 +118,7 @@ export default function Home() {
             alt="Paradox Rift"
             width={197}
             height={366}
-            link="/surging_sparks"
+            link="/paradox_rift"
           />
           <div className = "bg-[#070826] mt-3 rounded-xl">
             <p className = "text-center">Paradox Rift</p>
@@ -131,7 +131,7 @@ export default function Home() {
             alt="Pokemon 151"
             width={197}
             height={366}
-            link="/surging_sparks"
+            link="/pokemon_151"
           />
           <div className = "bg-[#070826] mt-3 rounded-xl">
             <p className = "text-center">Pokemon 151</p>

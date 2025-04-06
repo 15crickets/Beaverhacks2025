@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 
-export default function AccessingStuff({ url = '/api/surging_sparks', sortBy = 'name' }) {
+export default function AccessingStuff({ url = '/api/data/surging_sparks', sortBy = 'name' }) {
   const [results, setResults] = useState([]);
 
   useEffect(() => {
@@ -10,7 +10,6 @@ export default function AccessingStuff({ url = '/api/surging_sparks', sortBy = '
       const fullUrl = `${url}?sortBy=${sortBy}`;
       const res = await fetch(fullUrl);
       const data = await res.json();
-      console.log('Fetched data:', data);
       setResults(data);
     };
 
