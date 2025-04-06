@@ -1,17 +1,16 @@
 'use client';
 import { useState } from 'react';
 import AccessingStuff from './accessing_stuff';
-import Link from "next/link";
+import Link from 'next/link';
 
-export default function SortingComponent() {
-  const [sortBy, setSortBy] = useState('name'); // Default sorting by name
+export default function SortingComponent({ url = '/api/surging_sparks' }) {
+  const [sortBy, setSortBy] = useState('name');
 
-  // Handle sort option change
   const handleSortChange = (e) => {
     setSortBy(e.target.value);
   };
+
   return (
-    
     <div className="grid justify-items-center">
       <div className="grid grid-cols-11 justify-items-end grid-flow-col">
         <div className="col-span-1 col-start-11">
@@ -33,10 +32,9 @@ export default function SortingComponent() {
           </select>
         </div>
       </div>
-      
 
-      {/* Pass selected sortBy value to AccessingStuff */}
-      <AccessingStuff sortBy={sortBy} />
+      {/* 👇 Pass sortBy AND the received url to AccessingStuff */}
+      <AccessingStuff url={url} sortBy={sortBy} />
     </div>
   );
 }

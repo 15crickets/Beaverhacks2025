@@ -2,19 +2,19 @@
 
 import { useState, useEffect } from 'react';
 
-export default function AccessingStuff({ sortBy = 'name' }) {
+export default function AccessingStuff({ url = '/api/surging_sparks', sortBy = 'name' }) {
   const [results, setResults] = useState([]);
 
   useEffect(() => {
     const fetchData = async () => {
-        const res = await fetch(`/api/surging_sparks?sortBy=${sortBy}`);
-
-        const data = await res.json();
-        setResults(data);
+      const fullUrl = `${url}?sortBy=${sortBy}`;
+      const res = await fetch(fullUrl);
+      const data = await res.json();
+      setResults(data);
     };
-    fetchData();
-  }, [sortBy]);
 
+    fetchData();
+  }, [url, sortBy]); // Re-run effect if URL or sort order changes
 
   return (
     <div className="grid grid-cols-4 gap-20">
