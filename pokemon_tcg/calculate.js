@@ -112,6 +112,113 @@ async function calculatePackValue(dbName, collectionName) {
   }
 }
 
+async function calculatePaldeanFatesValue(dbName, collectionName) {
+  try {
+    const database = client.db(dbName);
+    const collection = database.collection(collectionName);
+
+    const premiumRarities = {
+      "Shiny Rare": 0.2544,
+      "Shiny Ultra Rare": 0.0722,
+      "Ultra Rare": 0.0661,
+      "Double Rare": 0.1589,
+      "Illustration Rare": 0.0722,
+      "Special Illustration Rare": 0.0172,
+      "Hyper Rare": 0.0161
+    };
+
+    const baseRarities = ["Common", "Uncommon", "Rare"];
+    const rarityCounts = {};
+    const averageValues = {};
+
+    // Base rarity calculations
+    for (const rarity of baseRarities) {
+      const cards = await collection.find({ rarity }).toArray();
+      if (cards.length > 0) {
+        rarityCounts[rarity] = cards.length;
+
+        const totalNormal = cards.reduce((sum, card) => sum + (card.normal || 0), 0);
+        const avgNormal = totalNormal / cards.length;
+
+        const totalReverse = cards.reduce((sum, card) => sum + (card.reverse_holofoil || 0), 0);
+        const avgReverse = totalReverse / cards.length;
+
+        averageValues[`${rarity}_normal`] = avgNormal;
+        averageValues[`${rarity}_reverse`] = avgReverse;
+      }
+    }
+
+    // Premium rarity calculations
+    for (const rarity in premiumRarities) {
+      const cards = await collection.find({ rarity }).toArray();
+      if (cards.length > 0) {
+        rarityCounts[rarity] = cards.length;
+        const total = cards.reduce((sum, card) => sum + (card.holofoil || 0), 0);
+        averageValues[rarity] = total / cards.length;
+      } else {
+        rarityCounts[rarity] = 0;
+        averageValues[rarity] = 0;
+      }
+    }
+
+    const totalBase = baseRarities.reduce((sum, rarity) => sum + (rarityCounts[rarity] || 0), 0);
+    let expectedValue = 0;
+
+    // Slot 1-4: Common (normal)
+    expectedValue += 4 * (averageValues["Common_normal"] || 0);
+
+    // Slot 5-7: Uncommon (normal)
+    expectedValue += 3 * (averageValues["Uncommon_normal"] || 0);
+
+    // Slot 8: Shiny Rare / Shiny Ultra Rare / scaled base rarities
+    const shinyRareOdds = premiumRarities["Shiny Rare"];
+    const shinyUltraOdds = premiumRarities["Shiny Ultra Rare"];
+    const totalShinyOdds = shinyRareOdds + shinyUltraOdds;
+
+    expectedValue += shinyRareOdds * (averageValues["Shiny Rare"] || 0);
+    expectedValue += shinyUltraOdds * (averageValues["Shiny Ultra Rare"] || 0);
+
+    const remainingChance8 = 1 - totalShinyOdds;
+    for (const rarity of baseRarities) {
+      const proportion = (rarityCounts[rarity] || 0) / totalBase;
+      expectedValue += remainingChance8 * proportion * (averageValues[`${rarity}_reverse`] || 0);
+    }
+
+    // Slot 9: Illustration/Special/Hyper or scaled base rarities
+    const slot9RarityChances = {
+      "Illustration Rare": premiumRarities["Illustration Rare"],
+      "Special Illustration Rare": premiumRarities["Special Illustration Rare"],
+      "Hyper Rare": premiumRarities["Hyper Rare"]
+    };
+
+    const totalSlot9Premium = Object.values(slot9RarityChances).reduce((a, b) => a + b, 0);
+    for (const [rarity, chance] of Object.entries(slot9RarityChances)) {
+      expectedValue += chance * (averageValues[rarity] || 0);
+    }
+
+    const remainingChance9 = 1 - totalSlot9Premium;
+    for (const rarity of baseRarities) {
+      const proportion = (rarityCounts[rarity] || 0) / totalBase;
+      expectedValue += remainingChance9 * proportion * (averageValues[`${rarity}_reverse`] || 0);
+    }
+
+    // Slot 10: Ultra / Double / fallback Rare reverse
+    const slot10Ultra = premiumRarities["Ultra Rare"];
+    const slot10Double = premiumRarities["Double Rare"];
+    expectedValue += slot10Ultra * (averageValues["Ultra Rare"] || 0);
+    expectedValue += slot10Double * (averageValues["Double Rare"] || 0);
+
+    const remainingChance10 = 1 - slot10Ultra - slot10Double;
+    expectedValue += remainingChance10 * (averageValues["Rare_reverse"] || 0);
+
+    console.log(`Estimated average pack value for Paldean Fates: $${expectedValue.toFixed(2)}`);
+  } catch (error) {
+    console.error("Error:", error);
+  }
+}
+
+
+
 // Main runner
 async function run() {
   try {
@@ -121,7 +228,7 @@ async function run() {
     // Call as many times as needed
     await calculatePackValue("test_database", "151");
     await calculatePackValue("test_database", "journey_together");
-    await calculatePackValue("test_database", "paldean_fates");
+    await calculatePaldeanFatesValue("test_database", "paldean_fates");
     await calculatePackValue("test_database", "paradox_rift");
     await calculatePackValue("test_database", "prismatic_evolutions");
     await calculatePackValue("test_database", "shrouded_fable");
