@@ -23,14 +23,17 @@ export default async function AccessingStuff() {
   const rarityList = results.map((doc) => doc.rarity);
 
   return (
-    <div>
-      <h2>Surging Sparks Cards</h2>
-      {nameList.map((name, i) => (
-        <div key={i}>
-          <img src={imageList[i]} alt={name} />
-          <p>{name} - {priceList[i]} ({rarityList[i]})</p>
+    <>
+      {imageList.map((item, index) => (
+        <div key={index} className="flex flex-col w-fit">
+          <img src={item} alt={`Image ${index}`} className="mb-2" />
+          <div className="bg-[#070826] mt-3 rounded-xl mb-15 w-full">
+            <p className="text-center font-bold">{nameList[index]}</p>
+            <p className="text-center font-bold">{rarityList[index]}</p>
+            <p className="text-center font-bold">${priceList[index]}</p>
+          </div>
         </div>
       ))}
-    </div>
+    </>
   );
 }
