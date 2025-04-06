@@ -91,3 +91,4 @@ async function finalCalc(array) {
 }
 
 run().catch(console.dir);   
+
